@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+// import express from '../index';
+// const { express, router } = require("../index");
 const User = require("../models/User");
 const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
@@ -28,7 +30,7 @@ router.post(
         // password: req.body.password,
         password: securePass,
         email: req.body.email,
-        location: req.body.location
+        location: req.body.location,
       });
       res.json({ success: true });
     } catch (error) {
@@ -42,7 +44,7 @@ router.post(
   "/loginuser",
   [
     body("email").isEmail(),
-    body("password", "Incorrect password").isLength({ min: 5 })
+    body("password", "Incorrect password").isLength({ min: 5 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -69,8 +71,8 @@ router.post(
 
       const data = {
         user: {
-          id: userData.id
-        }
+          id: userData.id,
+        },
       };
 
       const authToken = jwt.sign(data, jwtSecret);
@@ -82,4 +84,5 @@ router.post(
   }
 );
 
+// export default router;
 module.exports = router;

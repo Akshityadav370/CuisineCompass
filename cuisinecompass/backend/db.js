@@ -10,17 +10,26 @@ const mongoDB = async () => {
       console.log("connected");
 
       // Reading / fetching data
-      const fetched_data = mongoose.connection.db.collection("food_items");
-      fetched_data
-        .find({})
-        .toArray()
-        .then((data) => {
-          console.log();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      
+      const fetched_data1 = await mongoose.connection.db.collection(
+        "food_items"
+      );
+      const food_items = await fetched_data1.find({}).toArray();
+      if (food_items) {
+        global.food_items = food_items;
+        // console.log(global.food_items);
+      } else {
+        throw err;
+      }
+      const fetched_data2 = await mongoose.connection.db.collection(
+        "food_category"
+      );
+      const food_category = await fetched_data2.find({}).toArray();
+      if (food_category) {
+        global.food_category = food_category;
+        // console.log(global.food_category);
+      } else {
+        throw err;
+      }
     }
   } catch (err) {
     console.log("- - - ", err);
